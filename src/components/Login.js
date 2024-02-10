@@ -3,7 +3,7 @@ import Header from './Header'
 import checkValidData from "../utils/Validate"
 import { useRef, useState } from 'react';
 import { auth } from "../utils/Firebase";
-import {USER_AVATAR} from "../utils/constants"
+import {BACKGROUND_URL, USER_AVATAR} from "../utils/constants"
 import {  updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
@@ -93,7 +93,7 @@ const Login = () => {
         <Header/>
         <div className='absolute'>
 
-        <img src="https://assets.nflxext.com/ffe/siteui/vlv3/4da5d2b1-1b22-498d-90c0-4d86701dffcc/98a1cb1e-5a1d-4b98-a46f-995272b632dd/IN-en-20240129-popsignuptwoweeks-perspective_alpha_website_large.jpg" alt="" />
+        <img src={BACKGROUND_URL} alt="" />
         </div> 
         <form onSubmit={(e)=> e.preventDefault()}
           className='p-12 opacity-80 text-white w-3/12 mx-auto  my-36 absolute bg-black right-0 left-0'>
