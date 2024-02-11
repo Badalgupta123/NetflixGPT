@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import lang from "../utils/languageConstants"
 import { useDispatch, useSelector } from 'react-redux'
 import openai from "../utils/openai"
@@ -6,9 +6,13 @@ import { API_OPTIONS } from '../utils/constants'
 import { addGPTMovieResults } from '../utils/gptSlice'
 
 
+
+
 const GptSearchBar = () => {
+
   const dispatch = useDispatch();
   const languageKey= useSelector((store)=> store.config.lang)
+  const [showAlert,setShowAlert]= useState(false);
   
   // use useref to get data from input box
   const searchText = useRef(null);
@@ -23,7 +27,7 @@ const GptSearchBar = () => {
                 "&include_adult=false&page=1",API_OPTIONS);
 
     const json= await data.json();
-    console.log("inside search function : ",)
+    console.log(json.results)
     return json.results;
 
   }
@@ -31,6 +35,12 @@ const GptSearchBar = () => {
   
   
   const handleGptSearch= async()=>{
+
+    if (!searchText.current.value.trim()) {
+        setShowAlert(true);
+        return;
+    }
+
     // here searchtext = searchText.current.value
     // make api call to get movie results
     const gptQuery ="Act as a movie recommendation system and suggest some movies for the query"+
@@ -41,6 +51,7 @@ const GptSearchBar = () => {
       model: 'gpt-3.5-turbo',
     });
     if(!getResults.choices){
+      alert("Please enter something before searching .");
       return ;
     }
     // this will return array of movies
@@ -68,11 +79,13 @@ const GptSearchBar = () => {
         >
             <input ref={searchText} type="text" className='p-4 m-4 col-span-9' placeholder={lang[languageKey].gptSearchPlaceholder}/>
             <button 
-              onClick={handleGptSearch}
-              className='py-2 px-2 md:px-4 m-4 col-span-3 bg-red-700 text-white rounded-lg'>
+              onClick={ handleGptSearch }
+              className='py-2 px-2 md:px-4 m-4 col-span-3 hover:bg-red-950 bg-red-700 text-white rounded-lg'>
                 {lang[languageKey].search}
             </button>
+           
         </form>
+     
     </div>
   )
 }

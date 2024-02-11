@@ -8,14 +8,18 @@ import useUpcomingMovies from "../hooks/useUpcomingMovies"
 import useTopRatedMovies from '../hooks/useTopRatedMovies';
 import GptSeach from './GptSeach';
 import { useSelector } from 'react-redux';
+import Modal from './Modal';
+
 const Browse = () => {
   const showGptSearch= useSelector((store) => store.gpt.showGptSearch);
+  const isModalOpen = useSelector((store) => store.modal.isModalOpen);
   useNowPlayingMovies();
   usePopularMovies();
   useUpcomingMovies();
   useTopRatedMovies();
   return (
     <div>
+      {isModalOpen && <Modal/>}
       <Header/>
       {showGptSearch ? (
         <GptSeach/>
@@ -25,6 +29,7 @@ const Browse = () => {
           <SecondaryContainer/>
         </>
       )}
+     
       
       
     </div>
